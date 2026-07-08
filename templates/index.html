@@ -38,38 +38,8 @@
       width: 100px;
     }
   </style>
-  <script id="places-geojson" type="application/json">
-    {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [37.62, 55.793676]
-          },
-          "properties": {
-            "title": "«Легенды Москвы",
-            "placeId": "moscow_legends",
-            "detailsUrl": "{% static 'places/moscow_legends.json' %}"
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [37.64, 55.753676]
-          },
-          "properties": {
-            "title": "Крыши24.рф",
-            "placeId": "roofs24",
-            "detailsUrl": "{% static 'places/roofs24.json' %}"
-          }
-        }
-      ]
-    }
-  </script>
-  
+
+  {{ places_geojson|json_script:"places-geojson"}}  
 
   {% static 'hand-pointer-regular.svg' as hand_pointer_svg %}
   <script>var HAND_POINTER_SVG = "{{ hand_pointer_svg }}";</script>
