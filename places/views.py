@@ -39,9 +39,19 @@ def place_detail(request, pk):
 
     data = {
         "title": place.title,
+        "imgs": [image.image.url for image in images],
         "description_short": place.description_short,
         "description_long": place.description_long,
-        "imgs": [image.image.url for image in images],
+        "coordinates": {
+            "lng": str(place.lng),
+            "lat": str(place.lat),
+        },
     }
 
-    return JsonResponse(data)
+    return JsonResponse(
+        data,
+        json_dumps_params={
+            "ensure_ascii": False,
+            "indent": 4,
+        },
+    )
