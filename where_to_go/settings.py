@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "places",
     "adminsortable2",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": "500px",
+    "plugins": "advlist autolink lists link image preview searchreplace visualblocks code fullscreen media table help wordcount",
+    "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | code",
+}
