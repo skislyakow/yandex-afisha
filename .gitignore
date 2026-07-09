@@ -2,3 +2,7 @@
 *.pyc
 .vscode/
 pyproject.toml
+.env
+db.sqlite3
+media/
+staticfiles/
