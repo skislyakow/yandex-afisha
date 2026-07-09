@@ -101,6 +101,27 @@ python manage.py runserver
 
 Откройте http://127.0.0.1:8000/
 
+### Загрузка данных о местах
+
+Для наполнения базы данных используйте management-команду `load_place`:
+
+```bash
+python manage.py load_place <url>
+```
+
+Команда принимает два формата ссылок:
+
+- Обычная ссылка с GitHub (автоконвертируется):
+  ```
+  https://github.com/.../blob/master/places/Название.json
+  ```
+- Прямая ссылка на сырой JSON:
+  ```
+  https://raw.githubusercontent.com/.../master/places/Название.json
+  ```
+
+Команда скачивает JSON, создаёт или обновляет место и загружает фотографии.
+
 ## Использование
 
 ### Админ-панель
