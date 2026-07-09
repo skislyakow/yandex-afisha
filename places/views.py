@@ -1,7 +1,7 @@
-import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from .models import Place
 
 
@@ -20,7 +20,7 @@ def start(request):
                 "properties": {
                     "title": place.title,
                     "placeId": place.pk,
-                    "detailsUrl": f"/places/{place.pk}",
+                    "detailsUrl": reverse("place_detail", args=[place.pk]),
                 },
             }
         )
