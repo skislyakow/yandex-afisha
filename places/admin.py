@@ -6,6 +6,15 @@ from tinymce.widgets import TinyMCE
 from .models import Place, PlaceImage
 
 
+def image_preview(obj):
+    if obj.image:
+        return format_html(
+            '<img src="{}" style="max-height: 200px; width: auto;" />',
+            obj.image.url,
+        )
+    return "-"
+
+
 class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = PlaceImage
     extra = 1
@@ -13,12 +22,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
     @admin.display(description="Превью")
     def image_preview(self, obj):
-        if obj.image:
-            return format_html(
-                "<img src='{}' style='max-height: 200px; width: auto;' />,",
-                obj.image.url,
-            )
-        return "-"
+        return image_preview(obj)
 
 
 class PlaceAdminForm(forms.ModelForm):
@@ -36,16 +40,3 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [PlaceImageInline]
 
 
-@admin.register(PlaceImage)
-class PlaceImageAdmin(SortableAdminBase, admin.ModelAdmin):
-    list_display = ["place", "ordering", "image_preview"]
-    readonly_fields = ["image_preview"]
-
-    @admin.display(description="Превью")
-    def image_preview(self, obj):
-        if obj.image:
-            return format_html(
-                '<img src="{}" style="max-height: 200px; width: auto;" />',
-                obj.image.url,
-            )
-        return "-"

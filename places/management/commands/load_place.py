@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 import requests
@@ -23,9 +24,16 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> str | None:
         url = normalize_url(options["url"])
 
-        response = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
-        response.raise_for_status()
-        data = response.json()
+        try:
+            response = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+            response.raise_for_status()
+            data = response.json()
+        except requests.RequestException as e:
+            self.stderr.write(self.style.ERROR(f"Failed to download {url}: {e}"))
+            return
+        except json.JSONDecodeError as e:
+            self.stderr.write(self.style.ERROR(f"Invalid JSON from {url}: {e}"))
+            return
 
         place, created = Place.objects.get_or_create(
             title=data["title"],
@@ -45,9 +53,14 @@ class Command(BaseCommand):
             place.save()
 
         place.images.all().delete()
+        successful_images = 0
         for order, img_url in enumerate(data.get("imgs", [])):
-            img_response = requests.get(img_url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
-            img_response.raise_for_status()
+            try:
+                img_response = requests.get(img_url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+                img_response.raise_for_status()
+            except requests.RequestException as e:
+                self.stderr.write(self.style.WARNING(f"Failed to download image {img_url}: {e}"))
+                continue
 
             image_content = ContentFile(
                 img_response.content,
@@ -59,9 +72,10 @@ class Command(BaseCommand):
                 image=image_content,
                 ordering=order,
             )
+            successful_images += 1
 
         self.stdout.write(
             self.style.SUCCESS(
-                f'Place "{place.title}" loaded with {len(data.get("imgs", []))} images'
+                f'Place "{place.title}" loaded with {successful_images} images'
             )
         )

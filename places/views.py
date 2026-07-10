@@ -1,33 +1,15 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
 from .models import Place
 
 
 def start(request):
     places = Place.objects.all()
 
-    features = []
-    for place in places:
-        features.append(
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [place.lng, place.lat],
-                },
-                "properties": {
-                    "title": place.title,
-                    "placeId": place.pk,
-                    "detailsUrl": reverse("place_detail", args=[place.pk]),
-                },
-            }
-        )
-
     geojson = {
         "type": "FeatureCollection",
-        "features": features,
+        "features": [place.to_feature() for place in places],
     }
 
     return render(request, "index.html", {"places_geojson": geojson})

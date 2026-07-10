@@ -12,6 +12,22 @@ class Place(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def to_feature(self) -> dict:
+        from django.urls import reverse
+
+        return {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [self.lng, self.lat],
+            },
+            "properties": {
+                "title": self.title,
+                "placeId": self.pk,
+                "detailsUrl": reverse("place_detail", args=[self.pk]),
+            },
+        }
+
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(

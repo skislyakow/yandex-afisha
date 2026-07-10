@@ -2,6 +2,10 @@
 
 [![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)](https://python.org)
 [![Django](https://img.shields.io/badge/Django-6.0-092E20?logo=django)](https://www.djangoproject.com/)
+[![Leaflet](https://img.shields.io/badge/Leaflet-1.6-199900?logo=leaflet)](https://leafletjs.com)
+[![Vue.js](https://img.shields.io/badge/Vue.js-2-4FC08D?logo=vuedotjs)](https://vuejs.org)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-4-7952B3?logo=bootstrap)](https://getbootstrap.com)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite)](https://sqlite.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![dvmn](https://img.shields.io/badge/Проект-dvmn.org-FF6600)](https://dvmn.org)
 
@@ -121,6 +125,24 @@ python manage.py load_place <url>
   ```
 
 Команда скачивает JSON, создаёт или обновляет место и загружает фотографии.
+
+Ожидаемый формат входного JSON:
+
+```json
+{
+    "title": "Название места",
+    "description_short": "Короткое описание...",
+    "description_long": "<p>Полное описание с HTML...</p>",
+    "coordinates": {
+        "lng": "37.64912239999976",
+        "lat": "55.77754550000014"
+    },
+    "imgs": [
+        "https://raw.githubusercontent.com/.../photo1.jpg",
+        "https://raw.githubusercontent.com/.../photo2.jpg"
+    ]
+}
+```
 
 ## Использование
 
@@ -248,3 +270,7 @@ yandex-afisha/
 ## Учебный проект
 
 Данный проект создан в рамках курса [Devman](https://dvmn.org) для изучения Django.
+
+## Лицензия
+
+Проект распространяется под лицензией MIT. Подробнее — в файле [LICENSE](LICENSE).
