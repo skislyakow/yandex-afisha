@@ -1,4 +1,3 @@
-# mypy: disable-error-code="var-annotated"
 from django.db import models
 
 

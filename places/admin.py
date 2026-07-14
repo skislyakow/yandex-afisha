@@ -38,5 +38,3 @@ class PlaceAdminForm(forms.ModelForm):
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     form = PlaceAdminForm
     inlines = [PlaceImageInline]
-
-
