@@ -45,7 +45,7 @@ class PlaceImage(models.Model):
     class Meta:
         ordering = ["ordering"]
         verbose_name = "Изображение места"
-        verbose_name_plural = "Изображение мест"
+        verbose_name_plural = "Изображения мест"
 
     def __str__(self) -> str:
         return f"{self.place.title} - картинка {self.ordering}"
