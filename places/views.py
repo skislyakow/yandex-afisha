@@ -22,8 +22,8 @@ def place_detail(request, pk):
     data = {
         "title": place.title,
         "imgs": [image.image.url for image in images],
-        "description_short": place.description_short,
-        "description_long": place.description_long,
+        "short_description": place.short_description,
+        "long_description": place.long_description,
         "coordinates": {
             "lng": str(place.lng),
             "lat": str(place.lat),

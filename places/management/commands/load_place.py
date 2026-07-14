@@ -25,29 +25,35 @@ class Command(BaseCommand):
         url = normalize_url(options["url"])
 
         try:
-            response = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+            response = requests.get(
+                url, timeout=30, headers={"User-Agent": "Mozilla/5.0"}
+            )
             response.raise_for_status()
             data = response.json()
         except requests.RequestException as e:
-            self.stderr.write(self.style.ERROR(f"Failed to download {url}: {e}"))
+            self.stderr.write(
+                self.style.ERROR(f"Failed to download {url}: {e}")
+            )
             return
         except json.JSONDecodeError as e:
-            self.stderr.write(self.style.ERROR(f"Invalid JSON from {url}: {e}"))
+            self.stderr.write(
+                self.style.ERROR(f"Invalid JSON from {url}: {e}")
+            )
             return
 
         place, created = Place.objects.get_or_create(
             title=data["title"],
             defaults={
-                "description_short": data.get("description_short", ""),
-                "description_long": data.get("description_long", ""),
+                "short_description": data.get("description_short", ""),
+                "long_description": data.get("description_long", ""),
                 "lng": float(data["coordinates"]["lng"]),
                 "lat": float(data["coordinates"]["lat"]),
             },
         )
 
         if not created:
-            place.description_short = data.get("description_short", "")
-            place.description_long = data.get("description_long", "")
+            place.short_description = data.get("description_short", "")
+            place.long_description = data.get("description_long", "")
             place.lng = float(data["coordinates"]["lng"])
             place.lat = float(data["coordinates"]["lat"])
             place.save()
@@ -56,10 +62,16 @@ class Command(BaseCommand):
         successful_images = 0
         for order, img_url in enumerate(data.get("imgs", [])):
             try:
-                img_response = requests.get(img_url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+                img_response = requests.get(
+                    img_url, timeout=30, headers={"User-Agent": "Mozilla/5.0"}
+                )
                 img_response.raise_for_status()
             except requests.RequestException as e:
-                self.stderr.write(self.style.WARNING(f"Failed to download image {img_url}: {e}"))
+                self.stderr.write(
+                    self.style.WARNING(
+                        f"Failed to download image {img_url}: {e}"
+                    )
+                )
                 continue
 
             image_content = ContentFile(

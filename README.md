@@ -163,8 +163,8 @@ python manage.py load_place <url>
 {
     "title": "Экскурсионная компания «Легенды Москвы»",
     "imgs": ["/media/places_images/photo.jpg"],
-    "description_short": "Короткое описание...",
-    "description_long": "<p>Полное описание с HTML...</p>",
+    "short_description": "Короткое описание...",
+    "long_description": "<p>Полное описание с HTML...</p>",
     "coordinates": {
         "lng": "37.64912239999976",
         "lat": "55.77754550000014"
