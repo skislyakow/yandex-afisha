@@ -9,7 +9,7 @@ from .models import Place, PlaceImage
 def image_preview(obj):
     if obj.image:
         return format_html(
-            '<img src="{}" style="max-height: 200px; width: auto;" />',
+            '<img src="{}" style="max-height: 200px; max-width: 100%;" />',
             obj.image.url,
         )
     return "-"
