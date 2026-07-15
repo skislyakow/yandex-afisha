@@ -41,7 +41,7 @@ class Command(BaseCommand):
             )
             return
 
-        place, created = Place.objects.get_or_create(
+        place, _ = Place.objects.update_or_create(
             title=raw_place["title"],
             defaults={
                 "short_description": raw_place.get("description_short", ""),
@@ -50,13 +50,6 @@ class Command(BaseCommand):
                 "lat": float(raw_place["coordinates"]["lat"]),
             },
         )
-
-        if not created:
-            place.short_description = raw_place.get("description_short", "")
-            place.long_description = raw_place.get("description_long", "")
-            place.lng = float(raw_place["coordinates"]["lng"])
-            place.lat = float(raw_place["coordinates"]["lat"])
-            place.save()
 
         place.images.all().delete()
         successful_images = 0
