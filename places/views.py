@@ -20,8 +20,9 @@ def place_detail(request, pk):
         Place.objects.prefetch_related("images"),
         pk=pk,
     )
+    images = place.images.all()
 
-    data = {
+    serialized_place = {
         "title": place.title,
         "imgs": [image.image.url for image in images],
         "short_description": place.short_description,
@@ -33,7 +34,7 @@ def place_detail(request, pk):
     }
 
     return JsonResponse(
-        data,
+        serialized_place,
         json_dumps_params={
             "ensure_ascii": False,
             "indent": 4,
