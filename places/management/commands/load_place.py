@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 url, timeout=30, headers={"User-Agent": "Mozilla/5.0"}
             )
             response.raise_for_status()
-            data = response.json()
+            raw_place = response.json()
         except requests.RequestException as e:
             self.stderr.write(
                 self.style.ERROR(f"Failed to download {url}: {e}")
@@ -42,25 +42,25 @@ class Command(BaseCommand):
             return
 
         place, created = Place.objects.get_or_create(
-            title=data["title"],
+            title=raw_place["title"],
             defaults={
-                "short_description": data.get("description_short", ""),
-                "long_description": data.get("description_long", ""),
-                "lng": float(data["coordinates"]["lng"]),
-                "lat": float(data["coordinates"]["lat"]),
+                "short_description": raw_place.get("description_short", ""),
+                "long_description": raw_place.get("description_long", ""),
+                "lng": float(raw_place["coordinates"]["lng"]),
+                "lat": float(raw_place["coordinates"]["lat"]),
             },
         )
 
         if not created:
-            place.short_description = data.get("description_short", "")
-            place.long_description = data.get("description_long", "")
-            place.lng = float(data["coordinates"]["lng"])
-            place.lat = float(data["coordinates"]["lat"])
+            place.short_description = raw_place.get("description_short", "")
+            place.long_description = raw_place.get("description_long", "")
+            place.lng = float(raw_place["coordinates"]["lng"])
+            place.lat = float(raw_place["coordinates"]["lat"])
             place.save()
 
         place.images.all().delete()
         successful_images = 0
-        for order, img_url in enumerate(data.get("imgs", [])):
+        for order, img_url in enumerate(raw_place.get("imgs", [])):
             try:
                 img_response = requests.get(
                     img_url, timeout=30, headers={"User-Agent": "Mozilla/5.0"}
