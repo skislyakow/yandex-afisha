@@ -38,3 +38,11 @@ class PlaceAdminForm(forms.ModelForm):
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     form = PlaceAdminForm
     inlines = [PlaceImageInline]
+    search_fields = ["title"]
+
+
+@admin.register(PlaceImage)
+class PlaceImageAdmin(admin.ModelAdmin):
+    list_display = ["place", "ordering", "image_preview"]
+    readonly_fields = ["image_preview"]
+    autocomplete_fields = ["place"]

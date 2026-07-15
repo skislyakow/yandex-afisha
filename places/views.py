@@ -16,8 +16,10 @@ def start(request):
 
 
 def place_detail(request, pk):
-    place = get_object_or_404(Place, pk=pk)
-    images = place.images.all()
+    place = get_object_or_404(
+        Place.objects.prefetch_related("images"),
+        pk=pk,
+    )
 
     data = {
         "title": place.title,
