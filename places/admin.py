@@ -49,4 +49,4 @@ class PlaceImageAdmin(admin.ModelAdmin):
 
     @admin.display(description="Превью")
     def image_preview(self, obj):
-        return self.image_preview(obj)
+        return image_preview(obj)
