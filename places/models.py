@@ -1,14 +1,11 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Place(models.Model):
     title = models.CharField("Название", max_length=200, unique=True)
-    short_description = models.TextField(
-        "Краткое описание", blank=True, default=""
-    )
-    long_description = models.TextField(
-        "Полное описание", blank=True, default=""
-    )
+    short_description = models.TextField("Краткое описание", blank=True)
+    long_description = models.TextField("Полное описание", blank=True)
     lng = models.FloatField("Долгота")
     lat = models.FloatField("Широта")
 
@@ -20,8 +17,6 @@ class Place(models.Model):
         return self.title
 
     def to_feature(self) -> dict:
-        from django.urls import reverse
-
         return {
             "type": "Feature",
             "geometry": {
